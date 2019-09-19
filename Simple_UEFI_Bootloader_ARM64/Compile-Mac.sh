@@ -2,7 +2,7 @@
 #
 # =================================
 #
-# RELEASE VERSION 1.1
+# RELEASE VERSION 1.2
 #
 # GCC ARM64 UEFI Bootloader Mac Compile Script
 #
@@ -83,8 +83,8 @@ done < $CurDir/h_files.txt
 
 set -v
 while read f; do
-  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
-  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
+  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
+  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
 done < $CurDir/c_files_mac.txt
 set +v
 
@@ -94,8 +94,8 @@ set +v
 
 #set -v
 #for f in $CurDir/startup/*.c; do
-#  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
-#  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+#  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+#  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
 #done
 #set +v
 
@@ -106,8 +106,8 @@ set +v
 
 #set -v
 #for f in $CurDir/startup/*.s; do
-#  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 -I"$CurDir/inc/" -g -o "${f%.*}.o" "${f%.*}.s"
-#  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 -I"$CurDir/inc/" -g -o "${f%.*}.o" "${f%.*}.s"
+#  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 -I"$CurDir/inc/" -g -o "${f%.*}.o" "${f%.*}.s"
+#  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 -I"$CurDir/inc/" -g -o "${f%.*}.o" "${f%.*}.s"
 #done
 #set +v
 
@@ -117,8 +117,8 @@ set +v
 
 set -v
 for f in $CurDir/src/*.c; do
-  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
-  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+  echo "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+  "$GCC_FOLDER_NAME/bin/$GCC_PREFIX-gcc" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
 done
 set +v
 

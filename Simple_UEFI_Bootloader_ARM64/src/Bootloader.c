@@ -2,7 +2,7 @@
 //  Simple UEFI Bootloader: Bootloader Entrypoint
 //==================================================================================================================================
 //
-// Version 2.2 ARM64
+// Version 2.3 ARM64
 //
 // Author:
 //  KNNSpeed
@@ -164,6 +164,13 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 
 */
   EFI_STATUS Status;
+
+  // Do a preliminary screen clear, always
+  Status = SystemTable->ConOut->ClearScreen(SystemTable->ConOut);
+  if(EFI_ERROR(Status))
+  {
+    Print(L"NOTE: Could not clear the screen, so there may be some system text above this line.\r\n");
+  }
 
 #ifdef DISABLE_UEFI_WATCHDOG_TIMER
   // Disable watchdog timer for debugging
@@ -344,7 +351,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 
   // Data verification
   Print(L"Config table address: 0x%llx\r\n", ST->ConfigurationTable);
-  Print(L"Data at RSDP (first 16 bytes): 0x%016llx%016llx\r\n", *(EFI_PHYSICAL_ADDRESS*)(ST->ConfigurationTable[RSDP_index].VendorTable + 8), *(EFI_PHYSICAL_ADDRESS*)ST->ConfigurationTable[RSDP_index].VendorTable);
+  Print(L"Data at RSDP (first 16 bytes): 0x%016llx%016llx\r\n", *(EFI_PHYSICAL_ADDRESS*)(((UINT64)ST->ConfigurationTable[RSDP_index].VendorTable) + 8), *(EFI_PHYSICAL_ADDRESS*)ST->ConfigurationTable[RSDP_index].VendorTable);
 #endif
 
   // Load a program and exit boot services, then pass a loader block to that program's entry point to execute the program

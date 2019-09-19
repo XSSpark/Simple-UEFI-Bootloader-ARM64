@@ -1,7 +1,7 @@
 # Simple UEFI Bootloader ARM64
 A UEFI bootloader for bare-metal ARM64 applications. Looking for the x86-64 version? Get it here: https://github.com/KNNSpeed/Simple-UEFI-Bootloader  
 
-**Version 2.2**
+**Version 2.3**
 
 This bootloader is like a much simpler version of GRUB/Elilo/Windows Boot Manager, but mainly meant for writing your own operating system-less ARM64 programs, kernels, or full operating systems. It supports Windows, Linux, and Mac executable binaries (PE32+, 64-bit ELF, and 64-bit Mach-O formats). It also supports... Well, I'll let you figure that one out yourself. ;)
 
@@ -137,6 +137,8 @@ Requires GCC 7.1.0 or later and Binutils 2.29.1 or later. I cannot make any guar
     *That's it! It should compile and a binary called "BOOTAA64.EFI" will be output into the "Backend" folder.*
 
 ## Change Log
+
+V2.3 (9/18/2019) - Added the ability to do relative relocations for ELF64 files. This allows more complex kernels compiled in ELF64 format to work more easily/with significantly less extensive modifications than before. Also, the compile script options have been updated and reordered for efficiency and optimization improvements. Fixed a memory map size calculation bug that has managed to exist since the very beginning--all it took were Apple's crazy memory maps on x86_64 to find it.
 
 V2.2 (5/24/2019) - In Loader Params, the RSDP pointer has been changed to the Configuration Table pointer. This allows programs to use all available configuration tables, not just the ACPI ones. Also changed some of the initial print statements, added Number_of_ConfigTables and UEFI_Version to the loader parameters, and added a 90 second menu timer for the multi-GPU graphics device selection and the single GPU resolution selection menus. Also made graphics mode selection more consistent when using characters to denote modes >10. There's also what looks like a "startup screen" now, some of which was always there despite only being viewable on standard resolutions higher than 1024x768. This not-really-new screen has a (stoppable) 10-second timeout so that it doesn't really get in the way of anything. Oh, and those pesky Wsign-compare warnings when compiling debug binaries are gone now (switched to using ~0ULL, which really should've been used from the get-go instead of -1).  
 

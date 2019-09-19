@@ -2,7 +2,7 @@
 #
 # =================================
 #
-# RELEASE VERSION 1.1
+# RELEASE VERSION 1.2
 #
 # GCC ARM64 UEFI Bootloader Linux Compile Script for ARM64 Hosts
 #
@@ -88,8 +88,8 @@ done < $CurDir/h_files.txt
 
 set -v
 while read f; do
-  echo "$GCC_FOLDER_NAME/bin/gcc" -ffreestanding -fpic -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
-  "$GCC_FOLDER_NAME/bin/gcc" -ffreestanding -fpic -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
+  echo "$GCC_FOLDER_NAME/bin/gcc" -mabi=lp64 -mcmodel=small -Og -ffreestanding -fpic -fshort-wchar -fomit-frame-pointer -fno-delete-null-pointer-checks -fno-zero-initialized-in-bss -fno-common -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -fno-merge-constants --std=c11 $HFILES -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
+  "$GCC_FOLDER_NAME/bin/gcc" -mabi=lp64 -mcmodel=small -Og -ffreestanding -fpic -fshort-wchar -fomit-frame-pointer -fno-delete-null-pointer-checks -fno-zero-initialized-in-bss -fno-common -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -fno-merge-constants --std=c11 $HFILES -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "$f"
 done < $CurDir/c_files_linux.txt
 set +v
 
@@ -99,8 +99,8 @@ set +v
 
 #set -v
 #for f in $CurDir/startup/*.c; do
-#  echo "$GCC_FOLDER_NAME/bin/gcc" -ffreestanding -fpic -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -DGNU_EFI_USE_MS_ABI --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
-#  "$GCC_FOLDER_NAME/bin/gcc" -ffreestanding -fpic -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -DGNU_EFI_USE_MS_ABI --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+#  echo "$GCC_FOLDER_NAME/bin/gcc" -mabi=lp64 -mcmodel=small -Og -ffreestanding -fpic -fshort-wchar -fomit-frame-pointer -fno-delete-null-pointer-checks -fno-zero-initialized-in-bss -fno-common -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -fno-merge-constants --std=c11 $HFILES -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+#  "$GCC_FOLDER_NAME/bin/gcc" -mabi=lp64 -mcmodel=small -Og -ffreestanding -fpic -fshort-wchar -fomit-frame-pointer -fno-delete-null-pointer-checks -fno-zero-initialized-in-bss -fno-common -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -fno-merge-constants --std=c11 $HFILES -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
 #done
 #set +v
 
@@ -122,8 +122,8 @@ set +v
 
 set -v
 for f in $CurDir/src/*.c; do
-  echo "$GCC_FOLDER_NAME/bin/gcc" -ffreestanding -fpic -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
-  "$GCC_FOLDER_NAME/bin/gcc" -ffreestanding -fpic -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 $HFILES -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+  echo "$GCC_FOLDER_NAME/bin/gcc" -mabi=lp64 -mcmodel=small -Og -ffreestanding -fpic -fshort-wchar -fomit-frame-pointer -fno-delete-null-pointer-checks -fno-zero-initialized-in-bss -fno-common -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -fno-merge-constants --std=c11 $HFILES -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
+  "$GCC_FOLDER_NAME/bin/gcc" -mabi=lp64 -mcmodel=small -Og -ffreestanding -fpic -fshort-wchar -fomit-frame-pointer -fno-delete-null-pointer-checks -fno-zero-initialized-in-bss -fno-common -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -fno-merge-constants --std=c11 $HFILES -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -Wa,-adhln="${f%.*}.out" -MF"${f%.*}.d" -MT"${f%.*}.o" -o "${f%.*}.o" "${f%.*}.c"
 done
 set +v
 
@@ -158,8 +158,9 @@ done
 # is called "program.so"
 #
 
+# Unlike x86_64, we can't use static-pie here because it's not compatible with gnu-efi on aarch64
 set -v
-"$BINUTILS_FOLDER_NAME/bin/ld" -T$LinkerScript -nostdlib --warn-common --no-undefined --defsym=EFI_SUBSYSTEM=0xa -znocombreloc -s -shared -Bsymbolic -Map=output.map -o "program.so" @"objects.list"
+"$BINUTILS_FOLDER_NAME/bin/ld" -T$LinkerScript -nostdlib -s -shared -Bsymbolic --warn-common --no-undefined -ztext -znorelro -znow --defsym=EFI_SUBSYSTEM=0xa -znocombreloc -Map=output.map -o "program.so" @"objects.list"
 set +v
 # Remove -s in the above command to keep debug symbols in the output binary.
 

@@ -2,7 +2,7 @@
 //  Simple UEFI Bootloader: Graphics Functions
 //==================================================================================================================================
 //
-// Version 2.2 ARM64
+// Version 2.3 ARM64
 //
 // Author:
 //  KNNSpeed
@@ -169,6 +169,7 @@ EFI_STATUS InitUEFI_GOP(EFI_HANDLE ImageHandle, GPU_CONFIG * Graphics)
     Print(L"Name2Handles LocateHandleBuffer error. 0x%llx\r\n", GOPStatus);
     return GOPStatus;
   }
+  
 /*
   // This could be useful if one wanted a list of all drivers in a system (there's a FreePool commented out later for this, too)
   EFI_HANDLE *DriverHandles;

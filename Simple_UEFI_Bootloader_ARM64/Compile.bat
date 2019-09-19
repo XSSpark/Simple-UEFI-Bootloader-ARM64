@@ -3,7 +3,7 @@
 rem
 rem =================================
 rem
-rem VERSION 1.1
+rem VERSION 1.2
 rem
 rem GCC (MinGW-w64) ARM64 UEFI Bootloader Windows Compile Script
 rem
@@ -43,7 +43,7 @@ set CurDir=%CD%
 set CurDir2=%CurDir:\=/%
 set CurDir3=%CurDir2: =\ %
 set GCC_FOLDER_NAME=llvm-mingw
-set GCC_PREFIX=aarch64-w64-mingw32-
+set GCC_PREFIX=aarch64-w64-mingw32
 set EFI_FOLDER_NAME=gnu-efi-3.0.9
 
 rem
@@ -111,7 +111,7 @@ rem Loop through and compile the backend .c files, which are listed in c_files_w
 rem
 
 @echo %echo_stat%
-FOR /F "tokens=*" %%f IN ('type "%CurDir%\c_files_windows.txt"') DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%gcc.exe" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 -I!HFILES! -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"%%~df%%~pf%%~nf.d" -MT"%%~df%%~pf%%~nf.o" -o "%%~df%%~pf%%~nf.o" "%%~ff"
+FOR /F "tokens=*" %%f IN ('type "%CurDir%\c_files_windows.txt"') DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%-gcc.exe" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 -I!HFILES! -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"%%~df%%~pf%%~nf.d" -MT"%%~df%%~pf%%~nf.o" -o "%%~df%%~pf%%~nf.o" "%%~ff"
 @echo off
 
 rem
@@ -119,7 +119,7 @@ rem Compile the .c files in the startup folder (if any exist)
 rem
 
 @echo %echo_stat%
-FOR %%f IN ("%CurDir2%/startup/*.c") DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%gcc.exe" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 -I!HFILES! -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"%CurDir2%/startup/%%~nf.d" -MT"%CurDir2%/startup/%%~nf.o" -o "%CurDir2%/startup/%%~nf.o" "%CurDir2%/startup/%%~nf.c"
+FOR %%f IN ("%CurDir2%/startup/*.c") DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%-gcc.exe" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 -I!HFILES! -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -MF"%CurDir2%/startup/%%~nf.d" -MT"%CurDir2%/startup/%%~nf.o" -o "%CurDir2%/startup/%%~nf.o" "%CurDir2%/startup/%%~nf.c"
 @echo off
 
 rem
@@ -128,7 +128,7 @@ rem initialize the system)
 rem
 
 @echo %echo_stat%
-FOR %%f IN ("%CurDir2%/startup/*.s") DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%gcc.exe" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 -I"%CurDir2%/inc/" -g -o "%CurDir2%/startup/%%~nf.o" "%CurDir2%/startup/%%~nf.s"
+FOR %%f IN ("%CurDir2%/startup/*.s") DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%-gcc.exe" -mcmodel=small -mno-red-zone -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 -I"%CurDir2%/inc/" -g -o "%CurDir2%/startup/%%~nf.o" "%CurDir2%/startup/%%~nf.s"
 @echo off
 
 rem
@@ -136,7 +136,7 @@ rem Compile user .c files
 rem
 
 @echo on
-FOR %%f IN ("%CurDir2%/src/*.c") DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%gcc.exe" -ffreestanding -fshort-wchar -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants -mno-red-zone --std=c11 -I!HFILES! -Og -g3 -Wall -Wextra -Wdouble-promotion -fmessage-length=0 -c -MMD -MP -MF"%CurDir2%/src/%%~nf.d" -MT"%CurDir2%/src/%%~nf.o" -o "%CurDir2%/src/%%~nf.o" "%CurDir2%/src/%%~nf.c"
+FOR %%f IN ("%CurDir2%/src/*.c") DO "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%-gcc.exe" -mcmodel=small -mno-red-zone -Og -ffreestanding -fshort-wchar -fomit-frame-pointer -fno-stack-protector -fno-stack-check -fno-strict-aliasing -fno-merge-all-constants --std=c11 -I!HFILES! -g3 -Wall -Wextra -Wdouble-promotion -Wpedantic -fmessage-length=0 -c -MMD -MP -MF"%CurDir2%/src/%%~nf.d" -MT"%CurDir2%/src/%%~nf.o" -o "%CurDir2%/src/%%~nf.o" "%CurDir2%/src/%%~nf.c"
 @echo off
 
 rem
@@ -171,7 +171,7 @@ rem output binary, which is called "BOOTAA64.EFI"
 rem
 
 @echo on
-"%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%gcc.exe" -nostdlib -s -Wl,-m,arm64pe -Wl,/nodefaultlib -Wl,/subsystem:EFI_APPLICATION -Wl,/dll -Wl,/entry:efi_main -Wl,/lldmap:output.map -o "BOOTAA64.EFI" @"objects.list"
+"%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%-gcc.exe" -nostdlib -s -Wl,-m,arm64pe -Wl,/nodefaultlib -Wl,/subsystem:EFI_APPLICATION -Wl,/dll -Wl,/entry:efi_main -Wl,/lldmap:output.map -o "BOOTAA64.EFI" @"objects.list"
 @echo off
 rem Remove -s in the above command to keep debug symbols in the output binary.
 
@@ -189,7 +189,7 @@ echo Generating binary and Printing size information:
 echo.
 echo ---- The "size" utility is not provided in this build system, sorry ----
 rem "%GCC_FOLDER_NAME%\bin\objcopy.exe" -O binary "program.exe" "program.bin"
-rem "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%size.exe" "BOOTAA64.EFI"
+rem "%GCC_FOLDER_NAME%\bin\%GCC_PREFIX%-size.exe" "BOOTAA64.EFI"
 echo.
 
 set /P UPL="Cleanup, recompile, or done? [c for cleanup, r for recompile, any other key for done] "
